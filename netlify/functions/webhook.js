@@ -4,14 +4,18 @@ export async function handler(event) {
   try {
     const data = JSON.parse(event.body);
 
-    console.log("MONO WEBHOOK:", data);
+    console.log("FULL WEBHOOK DATA:", JSON.stringify(data));
 
     const status = data.status;
-    const email = data?.merchantPaymInfo?.comment; // 👈 беремо email
+    const email = data?.merchantPaymInfo?.comment;
     const order = data?.reference;
 
-    // 👉 записуємо ТІЛЬКИ успішні оплати
+    console.log("STATUS:", status);
+    console.log("EMAIL:", email);
+    console.log("ORDER:", order);
+
     if (status === "success" && email) {
+      console.log("ADDING TO SHEETS...");
       await addRow(order, email);
     }
 
