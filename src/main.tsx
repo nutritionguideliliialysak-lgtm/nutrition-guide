@@ -1,0 +1,16 @@
+import { createRoot } from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import App from "./app/App.tsx";
+import { Success } from "./app/pages/Success";
+import { ErrorPage } from "./app/pages/Error";
+import "./styles/index.css";
+
+createRoot(document.getElementById("root")!).render(
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<App />} />
+      <Route path="/success" element={<Success />} />
+      <Route path="/error" element={<ErrorPage />} />
+    </Routes>
+  </BrowserRouter>
+);
