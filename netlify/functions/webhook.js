@@ -4,7 +4,7 @@ export async function handler(event) {
   try {
     const data = JSON.parse(event.body);
 
-    console.log("FULL WEBHOOK DATA:", JSON.stringify(data));
+    console.log("FULL DATA:", JSON.stringify(data));
 
     const status = data.status;
     const email = data?.merchantPaymInfo?.comment;
@@ -14,9 +14,12 @@ export async function handler(event) {
     console.log("EMAIL:", email);
     console.log("ORDER:", order);
 
-    if (status === "success" && email) {
-      console.log("ADDING TO SHEETS...");
-      await addRow(order, email);
+    // 👇 тимчасово прибираємо перевірку
+    if (email) {
+      await addRow(order || "no-order", email);
+      console.log("ADDED TO SHEETS");
+    } else {
+      console.log("NO EMAIL");
     }
 
     return {
