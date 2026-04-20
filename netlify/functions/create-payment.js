@@ -5,7 +5,7 @@ export async function handler() {
       ccy: 980,
       merchantPaymInfo: {
         reference: "order_" + Date.now(),
-        destination: "Оплата гайду",
+        destination: "Після успішної оплати, необхідно надіслати квитанцію з оплати в instagram:lilya_lysak",
       },
       redirectUrl: "https://nutrition-guide-liliia-lysak.netlify.app/success",
       webHookUrl: "https://nutrition-guide-liliia-lysak.netlify.app/.netlify/functions/webhook",
