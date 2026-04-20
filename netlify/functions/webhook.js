@@ -7,18 +7,11 @@ export async function handler(event) {
     console.log("FULL DATA:", JSON.stringify(data));
 
     const status = data.status;
-    const reference = data.reference || "";
-    const [order, email] = reference.split("|");
-
-    console.log("STATUS:", status);
-    console.log("EMAIL:", email);
-    console.log("ORDER:", order);
+    const email = data?.merchantPaymInfo?.comment;
+    const order = data?.reference;
 
     if (status === "success" && email) {
       await addRow(order, email);
-      console.log("SUCCESS PAYMENT → ADDED");
-    } else {
-      console.log("SKIPPED");
     }
 
     return {
