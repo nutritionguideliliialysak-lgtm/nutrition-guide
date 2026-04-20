@@ -1,14 +1,19 @@
-export async function handler() {
+export async function handler(event) {
   try {
+    const { email } = JSON.parse(event.body);
+
+    const order = "order_" + Date.now();
+
     const invoice = {
       amount: 29900, // 299 грн
       ccy: 980,
       merchantPaymInfo: {
-        reference: "order_" + Date.now(),
+        reference: order,
         destination: "Оплата гайду",
+        comment: email // 👈 передаємо email
       },
-      redirectUrl: "https://your-site.netlify.app/success",
-      webHookUrl: "https://your-site.netlify.app/.netlify/functions/webhook",
+      redirectUrl: "https://nutrition-guide-liliia-lysak-test2.netlify.app/success",
+      webHookUrl: "https://nutrition-guide-liliia-lysak-test2.netlify.app/.netlify/functions/webhook",
     };
 
     const response = await fetch("https://api.monobank.ua/api/merchant/invoice/create", {

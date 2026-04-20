@@ -4,24 +4,40 @@ import { useState } from 'react';
 
 export function CTA() {
 
+  const [email, setEmail] = useState('');
+  const [isValid, setIsValid] = useState(false);
+
+  const validateEmail = (value: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setEmail(value);
+    setIsValid(validateEmail(value));
+  };
+
   const benefits = [
     { icon: Clock, text: "Доступ назавжди" },
     { icon: Zap, text: "Результат з першого тижня" },
     { icon: Shield, text: "Перевірена система" }
   ];
+
   const handleBuy = async () => {
-  const res = await fetch('/.netlify/functions/create-payment', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-     body: JSON.stringify({}),
-  });
+    if (!isValid) return;
 
-  const data = await res.json();
+    const res = await fetch('/.netlify/functions/create-payment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
+    });
 
-  window.location.href = data.pageUrl;
-};
+    const data = await res.json();
+
+    window.location.href = data.pageUrl;
+  };
   
 
   return (
@@ -83,11 +99,23 @@ export function CTA() {
               </ul>
             </div>
 
-            {/* BUTTON */}
-            <Button onClick={handleBuy} className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white px-8 py-6 text-lg rounded-full group shadow-xl" size="lg" > 
-              Купити гайд за 299 грн 
-              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" /> 
-            </Button>
+            {/* EMAIL */}
+          <input
+            type="email"
+            placeholder="Введіть email"
+            value={email}
+            onChange={handleChange}
+            className="w-full p-4 border rounded-xl"
+          />
+
+          {/* BUTTON */}
+          <Button
+            onClick={handleBuy}
+            disabled={!isValid}
+            className="w-full bg-gradient-to-r from-pink-600 to-purple-600 text-white py-6 text-lg rounded-full disabled:opacity-50"
+          >
+            Купити гайд
+          </Button>
             
             <p className="text-sm text-gray-500">
               Безпечна оплата. Отримання на email.
