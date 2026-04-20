@@ -1,17 +1,15 @@
 export async function handler(event) {
   try {
-    const { email } = JSON.parse(event.body);
-
     const order = "order_" + Date.now();
+const reference = `${order}|${email}`;
 
-    const invoice = {
-      amount: 29900, // 299 грн
-      ccy: 980,
-      merchantPaymInfo: {
-        reference: order,
-        destination: "Оплата гайду",
-        comment: email // 👈 передаємо email
-      },
+const invoice = {
+  amount: 29900,
+  ccy: 980,
+  merchantPaymInfo: {
+    reference: reference,
+    destination: "Оплата гайду"
+  },
       redirectUrl: "https://nutrition-guide-liliia-lysak.netlify.app/success",
       webHookUrl: "https://nutrition-guide-liliia-lysak.netlify.app/.netlify/functions/webhook",
     };

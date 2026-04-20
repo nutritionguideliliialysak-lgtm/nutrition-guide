@@ -7,19 +7,18 @@ export async function handler(event) {
     console.log("FULL DATA:", JSON.stringify(data));
 
     const status = data.status;
-    const email = data?.merchantPaymInfo?.comment;
-    const order = data?.reference;
+    const reference = data.reference || "";
+    const [order, email] = reference.split("|");
 
     console.log("STATUS:", status);
     console.log("EMAIL:", email);
     console.log("ORDER:", order);
 
-    // 👇 тимчасово прибираємо перевірку
-    if (email) {
-      await addRow(order || "no-order", email);
-      console.log("ADDED TO SHEETS");
+    if (status === "success" && email) {
+      await addRow(order, email);
+      console.log("SUCCESS PAYMENT → ADDED");
     } else {
-      console.log("NO EMAIL");
+      console.log("SKIPPED");
     }
 
     return {
