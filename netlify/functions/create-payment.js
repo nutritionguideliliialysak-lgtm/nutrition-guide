@@ -8,6 +8,7 @@ export async function handler() {
         destination: "Після успішної оплати, необхідно надіслати квитанцію з оплати в instagram:lilya_lysak",
       },
       redirectUrl: "https://nutrition-guide-liliia-lysak.netlify.app/success",
+      tags:["Інформаційні послуги"], 
       webHookUrl: "https://nutrition-guide-liliia-lysak.netlify.app/.netlify/functions/webhook",
     };
 
